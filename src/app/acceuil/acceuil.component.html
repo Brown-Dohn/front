@@ -1,0 +1,150 @@
+<div>
+    <div class="search">
+        <h1>Search report</h1>
+        <form class="form">
+            <div class="row">
+                <div class="col-50">
+
+                    <div class="col-25">
+                        <label>Type of report</label>
+                    </div>
+                    <div class="col-75">
+                        <select name="typesiganl">
+                            <option value="">Roads</option>
+                            <option value="">Trash</option>
+                            <option value="">Public infrastructure</option>
+                            <option value="">Accident</option>
+                            <option value="">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label>Date of report</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="date" name="date1">
+                        <input type="date" name="date2">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label>Status</label><br>
+                    </div>
+                    <div class="col-75">
+                        <input type="checkbox" id="status1" name="id" value="1">
+                        <label for="status1"> New</label>
+                        <input type="checkbox" id="status2" name="id" value="2">
+                        <label for="status2"> Loading</label>
+                        <input type="checkbox" id="status3" name="id" value="2">
+                        <label for="status3"> Finish</label>
+                    </div>
+                </div>
+
+                <input type="submit" value="Search">
+            </div>
+
+        </form>
+    </div>
+</div>
+<div class="box">
+    <div class="cart" id="map">Cart</div>
+    <div class="list">
+        <h1>List of reports</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Descriptions</th>
+                    <th>Status</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Report 1</td>
+                    <td> Desrciption of report 1</td>
+                    <td> New</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 20*(page-1)+1 -->
+        <div class="pagination">
+            <a href="#">&laquo;</a>
+            <a href="#">1</a>
+            <a href="#" class="active">2</a>
+            <a href="#">3</a>
+            <a href="#">&raquo;</a>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var map = L.map('map').setView([-18.521, 46.472], 8);
+
+    var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        maxZoom: 9,
+        minZoom: 6,
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1
+    }).addTo(map);
+    var marks = [
+        {
+            name: "Signalement1",
+            lat: -15.551276,
+            lng: 48.68042
+        },
+        {
+            name: "Signalement2",
+            lat: -24.659186,
+            lng: 45.472412
+        },
+        {
+            name: "Signalement3",
+            lat: -22.423406,
+            lng: 44.483643
+        },
+        {
+            name: "Signalement4",
+            lat: -20.089146,
+            lng: 47.647705
+        }
+    ];
+    // marker.bindPopup("<b>Hello world!</b><br>I am a signalement.").openPopup();
+    var marker = L.marker([-18.521, 46.472]).addTo(map);
+    var popup = L.popup();
+
+    function onMapClick(e) {
+        popup
+            .setLatLng(e.latlng)
+            .setContent("You clicked the signialement at " + e.latlng.toString() + "<br><p>Click <a>here</a></p>")
+            .openOn(map);
+    }
+
+    map.on('click', onMapClick);
+    function mapmouseHover(e) {
+        tooltipPopup = L.popup({ offset: L.point(0, -50) });
+
+        tooltipPopup.setLatLng(e.target.getLatLng());
+        tooltipPopup.setContent("<b>Hello world!</b><br>I am a signalement.<br>");
+        tooltipPopup.openOn(map);
+
+    }
+    function mapmouseout(e) {
+        map.closePopup(tooltipPopup);
+    }
+    marker.on('mouseover', mapmouseHover);
+    marker.on('mouseout', mapmouseout);
+
+    for (let i = 0; i < marks.length; i++) {
+        var mark = L.marker([marks[i]["lat"], marks[i]["lng"]]).addTo(map);
+        // console.log(marks[i]["name"]);
+        // const element = array[i];
+        mark.on('mouseover', mapmouseHover);
+        mark.on('mouseout', mapmouseout);
+    }
+</script>

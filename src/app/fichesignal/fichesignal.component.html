@@ -1,0 +1,89 @@
+<div class="box">
+    <div class="cart" id="map">Cart</div>
+    <div class="list">
+        <h1>Report Card</h1>
+        <div class="Fiche">
+            <div class="desc">
+                <article>
+                    <h2>Title</h2>
+                    <label>Descriptions : </label>This is my descriptions 
+                    <br><label>Coordinate : </label><Strong>Lat : </Strong>-18.726901,  <strong>long : </strong>47.318115
+                    <br><label>Date : </label>22 th february 2022
+                    <br><label>Status : </label>New
+                    <br><label>Region : </label>My Region 
+                    <br> <label>Type of reppot : </label>Roads
+                </article>
+                <aside>
+                    <label>Signalman : </label>Username 
+                    <br>
+                    <img src="http://fakeimg.pl/100x100/000/?text=name"> 
+                    <br><strong>Addressmail</strong> 
+                </aside>
+            </div>
+            <div class="photos">
+                <img src="http://fakeimg.pl/460x460/000/?text=1">
+                <img src="http://fakeimg.pl/460x460/111/?text=2">
+                <img src="http://fakeimg.pl/460x460/222/?text=3">
+                <img src="http://fakeimg.pl/460x460/333/?text=4">
+            </div>
+            <div class="Changestatus"> 
+                <a href="#">Change status &raquo;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var map = L.map('map').setView([-18.521, 46.472], 8);
+
+    var tiles = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        maxZoom: 9,
+        minZoom: 6,
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1
+    }).addTo(map);
+    var marks = [
+        {
+            name: "Signalement choisi",
+            lat: -18.726901,
+            lng: 47.318115
+        }
+    ];
+    // marker.bindPopup("<b>Hello world!</b><br>I am a signalement.").openPopup();
+    var marker = L.marker([18.726901, 47.318115]).addTo(map);
+    var popup = L.popup();
+
+    function onMapClick(e) {
+        popup
+            .setLatLng(e.latlng)
+            .setContent("You clicked the signialement at " + e.latlng.toString() + "<br><p>Click <a>here</a></p>")
+            .openOn(map);
+    }
+
+    map.on('click', onMapClick);
+    function mapmouseHover(e) {
+        tooltipPopup = L.popup({ offset: L.point(0, -50) });
+
+        tooltipPopup.setLatLng(e.target.getLatLng());
+        tooltipPopup.setContent("<article><h2>Title</h2><label>Descriptions : </label>This is my descriptions <br><label>Coordinate : </label><Strong>Lat : </Strong>-18.726901,  <strong>long : </strong>47.318115<br><label>Date : </label>22 th february 2022<br><label>Status : </label>New<br><label>Region : </label>My Region<br> <label>Type of reppot : </label>Roads</article><aside><label>Signalman : </label>Username<br><img src=\"http://fakeimg.pl/100x100/000/?text=name\"><br><strong>Addressmail</strong> </aside>");
+        tooltipPopup.openOn(map);
+
+    }
+    function mapmouseout(e) {
+        map.closePopup(tooltipPopup);
+    }
+    marker.on('mouseover', mapmouseHover);
+    marker.on('mouseout', mapmouseout);
+
+    for (let i = 0; i < marks.length; i++) {
+        var mark = L.marker([marks[i]["lat"], marks[i]["lng"]]).addTo(map);
+        // console.log(marks[i]["name"]);
+        // const element = array[i];
+        mark.on('mouseover', mapmouseHover);
+        mark.on('mouseout', mapmouseout);
+    }
+</script>
